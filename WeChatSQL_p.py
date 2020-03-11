@@ -21,14 +21,14 @@ with open(r'C:\Users\ \Documents\WeChat Files\ \Msg\ChatMsg.db', 'rb') as f:
     blist = f.read()
 print(len(blist))
 
-salt = bytes(blist[:16])#微信将文件头换成了盐
+salt = blist[:16]#微信将文件头换成了盐
 key = hashlib.pbkdf2_hmac('sha1', password, salt, DEFAULT_ITER, KEY_SIZE)#获得Key
 
 first = blist[16:DEFAULT_PAGESIZE]#丢掉salt
 
 # import struct
 mac_salt = bytes([x^0x3a for x in salt])
-mac_key = hashlib.pbkdf2_hmac('sha1', key, mac_salt, 2, dklen = KEY_SIZE)
+mac_key = hashlib.pbkdf2_hmac('sha1', key, mac_salt, 2, KEY_SIZE)
 
 hash_mac = hmac.new(mac_key ,digestmod = 'sha1')#用第一页的Hash测试一下
 hash_mac.update(first[:-32])
