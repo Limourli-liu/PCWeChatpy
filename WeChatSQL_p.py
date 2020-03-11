@@ -44,10 +44,10 @@ with open(r'E:\Works\ChatMsg.db', 'wb') as f:
     f.write(SQLITE_FILE_HEADER)#写入文件头
     t = AES.new(key ,AES.MODE_CBC ,first[-48:-32])
     f.write(t.decrypt(first[:-48]))
-    f.write(t.decrypt(first[-48:]))
+    f.write(first[-48:])
     for i in blist:
             t = AES.new(key ,AES.MODE_CBC ,i[-48:-32])
             f.write(t.decrypt(i[:-48]))
-            f.write(t.decrypt(i[-48:]))
+            f.write(i[-48:])
 
 
